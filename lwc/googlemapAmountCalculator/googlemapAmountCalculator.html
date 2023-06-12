@@ -1,0 +1,212 @@
+<template>
+    <div class="slds-tabs_card">
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-standard-opportunity">
+                                 <lightning-icon icon-name="standard:recipe" alternative-text="recipe" title="recipe"></lightning-icon>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span>Google Map Distance and Cost Calculator</span>
+                                        <span class="slds-page-header__title slds-truncate" title="Recently Viewed">Distance and Cost Calculator</span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <br/>
+    <!-- Address Search Modal-->
+ 
+    <lightning-card  variant="Narrow"  title="" icon-name="standard:address">
+        <div class="slds-var-p-around_small">
+
+             <lightning-combobox
+            name="progress"
+            label="Select Mode"
+            required="true"
+            value={modeTrans}
+            placeholder="Select Progress"
+            options={options}
+            onchange={handleChangemodeTrans} ></lightning-combobox>
+
+            <lightning-layout multiple-rows>
+                                <lightning-layout-item padding="around-small" size="6" medium-device-size="6" large-device-size="6">
+
+                <lightning-layout-item padding="around-small" size="12" medium-device-size="12" large-device-size="12">
+                    <lightning-input type="search" variant="label-hidden" class="searchAddress" name="searchAddressSour"
+                        placeholder="Search Address.." onchange={handleChange} value={selectedAddress}>
+                    </lightning-input>
+                    <!-- Address Recommendations -->
+                    <div if:true={hasRecommendations}>
+                        <div class="address-recommendations" role="listbox">
+                            <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid"
+                                role="presentation">
+                                <template for:each={addressRecommendations} for:item="addressRecommendation">
+                                 <li key={addressRecommendation} role="presentation" name="source"
+                                        onclick={handleAddressRecommendationSelect}
+                                        data-value={addressRecommendation.place_id} class="slds-listbox__item">
+                                        <span
+                                            class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                            role="option">
+                                            <span class="slds-media__body slds-m-left_xx-small slds-m-bottom_xx-small">
+                                                <div class="slds-grid slds-m-bottom_small">
+                                                    <div class="slds-col slds-size_1-of-10">
+                                                        <lightning-button-icon size="medium" icon-name="utility:checkin"
+                                                            class="slds-input__icon" variant="bare" onclick={resetAddress}>
+                                                        </lightning-button-icon>
+                                                    </div>
+                                                    <div class="slds-m-left_medium slds-col slds-size_8-of-10">
+                                                        <span
+                                                            class="slds-listbox__option-text slds-listbox__option-text_entity"><b>{addressRecommendation.main_text}</b></span>
+                                                        <span
+                                                            class="slds-listbox__option-text slds-listbox__option-text_entity slds-m-top_xxx-small">{addressRecommendation.secondary_text}</span>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-10"></div>
+                                                </div>
+                                            </span>
+                                        </span>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </div>
+                </lightning-layout-item>
+            <!-- selected address info -->
+                <lightning-layout-item padding="around-small" size="12" medium-device-size="12" large-device-size="12">
+                    <lightning-input disabled="true" name="city" class="fieldvalidate" type="text"
+                                     label="City" value={city}>
+                    </lightning-input><br/>
+
+                    <lightning-input disabled="true" name="state" class="fieldvalidate" type="text"
+                                     label="State" value={state}>
+                    </lightning-input><br/>
+                    <lightning-input disabled="true" name="country" class="fieldvalidate" type="text"
+                                     label="Country" value={country}>
+                    </lightning-input><br/>
+                </lightning-layout-item>
+                                </lightning-layout-item>
+                <lightning-layout-item padding="around-small" size="6" medium-device-size="6" large-device-size="6">
+
+                    
+
+
+
+    <lightning-layout-item padding="around-small" size="12" medium-device-size="12" large-device-size="12">
+
+                    <lightning-input type="search" variant="label-hidden" class="searchAddress" name="searchAddressDest"
+                        placeholder="Search Address.." onchange={handleChange} value={selectedAddress2}>
+                    </lightning-input>
+                    <!-- Address Recommendations -->
+                    <div if:true={hasRecommendations2}>
+                        <div class="address-recommendations" role="listbox">
+                            <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid"
+                                role="presentation">
+                                <template for:each={addressRecommendations2} for:item="addressRecommendation">
+                                      <li key={addressRecommendation} role="presentation" name="dest" onclick={handleAddressRecommendationSelect} 
+                                        data-value={addressRecommendation.place_id} class="slds-listbox__item">
+                                        <span
+                                            class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                            role="option">
+                                            <span class="slds-media__body slds-m-left_xx-small slds-m-bottom_xx-small">
+                                                <div class="slds-grid slds-m-bottom_small">
+                                                    <div class="slds-col slds-size_1-of-10">
+                                                        <lightning-button-icon size="medium" icon-name="utility:checkin"
+                                                            class="slds-input__icon" variant="bare" onclick={resetAddress}>
+                                                        </lightning-button-icon>
+                                                    </div>
+                                                    <div class="slds-m-left_medium slds-col slds-size_8-of-10">
+                                                        <span
+                                                            class="slds-listbox__option-text slds-listbox__option-text_entity"><b>{addressRecommendation.main_text}</b></span>
+                                                        <span
+                                                            class="slds-listbox__option-text slds-listbox__option-text_entity slds-m-top_xxx-small">{addressRecommendation.secondary_text}</span>
+                                                    </div>
+                                                    <div class="slds-col slds-size_1-of-10"></div>
+                                                </div>
+                                            </span>
+                                        </span>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+
+                    </div>
+                </lightning-layout-item>
+            <!-- selected address info -->
+                <lightning-layout-item padding="around-small" size="12" medium-device-size="12" large-device-size="12">
+                    <lightning-input disabled="true" name="city" class="fieldvalidate" type="text"
+                                     label="City" value={city2}>
+                    </lightning-input><br/>
+                    <lightning-input disabled="true" name="state" class="fieldvalidate" type="text"
+                                     label="State" value={state2}>
+                    </lightning-input><br/>
+                    <lightning-input disabled="true" name="country" class="fieldvalidate" type="text"
+                                     label="Country" value={country2}>
+                    </lightning-input><br/>
+                </lightning-layout-item>
+
+      
+
+
+                </lightning-layout-item>
+
+            </lightning-layout>
+        </div>
+    <lightning-layout-item padding="around-small" size="12" medium-device-size="12" large-device-size="12">
+
+    <lightning-button variant="brand" label="Calculate Distance" title="Primary action" onclick={calculateDistance} class="slds-m-left_x-small"></lightning-button>
+    </lightning-layout-item>
+    <lightning-layout-item padding="around-small" size="12" medium-device-size="12" large-device-size="12">
+        <lightning-layout multiple-rows="true">
+
+    <lightning-layout-item padding="around-small" size="6" medium-device-size="6" large-device-size="6">
+
+<template for:each={searchWrapper.origin_addresses} for:item="results"  for:index="idx">
+<b key={results}>Source :</b> {results} 
+</template>
+    </lightning-layout-item>
+    <lightning-layout-item padding="around-small" size="6" medium-device-size="6" large-device-size="6">
+
+<template for:each={searchWrapper.destination_addresses} for:item="results">
+<b key={results}>Destination : </b> {results}
+</template>
+    </lightning-layout-item>
+        </lightning-layout>
+    <lightning-layout-item padding="around-small" size="12" medium-device-size="12" large-device-size="12">
+
+<table id="customers" border="1">
+
+      <tr>
+    <th>Distance</th>
+    <th>Time</th>
+    <th>Amount</th>
+
+  </tr>
+
+
+<template for:each={searchWrapper.rows} for:item="results" for:index="idx">
+<template for:each={results.elements} for:item="r">
+  <tr key={r.distance.text}>
+ <td>{r.distance.text} </td>
+  <td>  {r.duration.text}</td>
+  <td>  {r.Amount}</td>  
+  </tr>
+</template>
+
+                    
+                </template>
+
+</table>
+    </lightning-layout-item>
+    </lightning-layout-item>
+      </lightning-card>
+
+</template>
